@@ -174,7 +174,7 @@ class Sicredi extends AbstractBoleto implements BoletoContract
     {
         $ano = $this->getDataDocumento()->format('y');
         $byte = $this->getByte();
-        $numero_boleto = Util::numberFormatGeral($this->getNumero(), 5);
+        $numero_boleto = Util::numberFormatGeral(substr($this->getNumero(), -5), 5);
         $nossoNumero = $ano . $byte . $numero_boleto
             . CalculoDV::sicrediNossoNumero($this->getAgencia(), $this->getPosto(), $this->getConta(), $ano, $byte, $numero_boleto);
         return $nossoNumero;
