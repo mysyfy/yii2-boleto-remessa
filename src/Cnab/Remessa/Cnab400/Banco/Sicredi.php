@@ -140,9 +140,9 @@ class Sicredi extends AbstractRemessa implements RemessaContract
         $this->add(57, 62, '');
         $this->add(63, 70, Carbon::now()->format('Ymd'));
         $this->add(71, 71, '');
-        $this->add(72, 72, $boleto->getByte() == 1 ? 'S' : 'N');
+        $this->add(72, 72, $boleto->getResponsavelEmissaoBoleto() == 'C' ? 'S' : 'N');
         $this->add(73, 73, '');
-        $this->add(74, 74, $boleto->getByte() == 1 ? 'A' : 'B');
+        $this->add(74, 74, $boleto->getResponsavelEmissaoBoleto() == 'C' ? 'A' : 'B');
         $this->add(75, 76, '');
         $this->add(77, 78, '');
         $this->add(79, 82, '');
