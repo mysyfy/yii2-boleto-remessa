@@ -84,6 +84,15 @@ class Sicredi extends AbstractBoleto implements BoletoContract
      */
     protected $byte = 2;
 
+
+    /**
+     * 'C' : Cedente
+     * 'B' : Banco
+     *
+     * @var string
+     */
+    protected $responsavelEmissaoBoleto = 'C';
+
     /**
      * Define se possui ou não registro
      *
@@ -211,5 +220,17 @@ class Sicredi extends AbstractBoleto implements BoletoContract
 
         $this->campoLivre = $tipo_cobranca . $carteira . $nosso_numero . $agencia . $posto . $conta . '10';
         return $this->campoLivre .= Util::modulo11($this->campoLivre);
+    }
+
+    public function getResponsavelEmissaoBoleto() {
+        return $this->responsavelEmissaoBoleto;
+    }
+
+    public function setResponsavelEmissaoCedente() {
+        $this->responsavelEmissaoBoleto = 'C';
+    }
+
+    public function setResponsavelEmissaoBanco() {
+        $this->responsavelEmissaoBoleto = 'B';
     }
 }
