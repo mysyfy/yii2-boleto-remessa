@@ -283,7 +283,7 @@ class Bb extends AbstractRemessa implements RemessaContract
             if (defined($const)) {
                 $this->add(157, 158, constant($const));
             } else {
-                $this->add(157, 158, self::INSTRUCAO_PROTESTAR_VENC_XX);
+                $this->add(157, 158, self::INSTRUCAO_SEM);
                 $diasProtesto = Util::formatCnab('9', $boleto->getDiasProtesto(), 2, 0);
             }
 
