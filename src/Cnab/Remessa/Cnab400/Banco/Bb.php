@@ -273,7 +273,7 @@ class Bb extends AbstractRemessa implements RemessaContract
         $this->add(150, 150, $boleto->getAceite());
         $this->add(151, 156, $boleto->getDataDocumento()->format('dmy'));
         $this->add(157, 158, $boleto->getStatus() == $boleto::STATUS_BAIXA ? self::INSTRUCAO_BAIXAR : self::INSTRUCAO_SEM);
-        $this->add(159, 160, self::INSTRUCAO_NAO_PROTESTAR);
+        $this->add(159, 160, self::INSTRUCAO_SEM);
         $diasProtesto = '00';
         $const = sprintf('self::INSTRUCAO_PROTESTAR_VENC_%02s', $boleto->getDiasProtesto());
 
@@ -288,6 +288,7 @@ class Bb extends AbstractRemessa implements RemessaContract
             } else {
 
                 if($boleto->getDiasProtesto() == 0) {
+                    $this->add(159, 160, self::INSTRUCAO_NAO_PROTESTAR);
                     $this->add(157, 158, self::INSTRUCAO_NAO_PROTESTAR);
                 } else {
                     $this->add(157, 158, self::INSTRUCAO_SEM);
