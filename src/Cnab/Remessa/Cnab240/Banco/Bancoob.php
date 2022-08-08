@@ -342,6 +342,14 @@ class Bancoob extends AbstractRemessa implements RemessaContract
         $this->qtyRegistrosLote = $nSequencialLote;
         $this->iniciaDetalhe();
 
+        $sDataBaixa = 0;
+
+        if($this->getDiasBaixa()) {
+
+            $sDataBaixa = $boleto->getDataVencimento()->modify('+' .$this->getDiasBaixa())->format('dmY');
+
+        }
+
         $this->add(1, 3, Util::onlyNumbers($this->getCodigoBanco())); //Código do Banco
         $this->add(4, 7, '0001'); // Numero do lote remessa
         $this->add(8, 8, '3'); // Numero do lote remessa
@@ -354,7 +362,7 @@ class Bancoob extends AbstractRemessa implements RemessaContract
         $this->add(100, 139, Util::formatCnab('X', $boleto->getInstrucoes()[0], 40));
         $this->add(140, 179, Util::formatCnab('X', $boleto->getInstrucoes()[1], 40));
         $this->add(180, 199, '');
-        $this->add(200, 215, Util::formatCnab(9, 0, 16));
+        $this->add(200, 215, Util::formatCnab(9, $sDataBaixa, 16));
         $this->add(216, 216, '');
         $this->add(217, 228, Util::formatCnab(9, 0, 12));
         $this->add(229, 230, '');
