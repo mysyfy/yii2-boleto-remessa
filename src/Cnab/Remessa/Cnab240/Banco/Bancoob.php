@@ -350,8 +350,8 @@ class Bancoob extends AbstractRemessa implements RemessaContract
 
         $sDataCobrancaEncargos = $boleto->getDataVencimento()->modify('+1 day')->format('dmY');
         if($boleto->getJurosApos() > 0) {
-            $dData      = new \DateTime('@'.$boleto->getDataVencimento()->getTimestamp());
-            $sDataCobrancaEncargos = $dData->modify('+'.$boleto->getJurosApos().' days')->format('dmY');
+            $dData                  = new \DateTime('@'.$boleto->getDataVencimento()->getTimestamp());
+            $sDataCobrancaEncargos  = $dData->modify('+'.$boleto->getJurosApos().' days')->format('dmY');
         }
 
         $this->add(1, 3, Util::onlyNumbers($this->getCodigoBanco())); //Código do Banco
@@ -368,7 +368,8 @@ class Bancoob extends AbstractRemessa implements RemessaContract
         $this->add(89, 99, '');
         $this->add(100, 139, Util::formatCnab('X', $boleto->getInstrucoes()[0], 40));
         $this->add(140, 179, Util::formatCnab('X', $boleto->getInstrucoes()[1], 40));
-        $this->add(180, 199, '');
+        $this->add(180, 198, '');
+        $this->add(199, 199, '2');
         $this->add(200, 207, Util::formatCnab(9, $sDataBaixa, 8));
         $this->add(208, 215, Util::formatCnab(9, 0, 8));
         $this->add(216, 216, '');
