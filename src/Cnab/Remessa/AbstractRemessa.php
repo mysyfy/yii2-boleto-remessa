@@ -101,6 +101,14 @@ abstract class AbstractRemessa
      */
     protected $agenciaDv;
 
+
+    /**
+     * Qtde de dias para protesto
+     *
+     * @var int
+     */
+    protected $diasProtesto;
+
     /**
      * Conta
      *
@@ -547,4 +555,21 @@ abstract class AbstractRemessa
         header('Content-Disposition: attachment; filename="' . $filename . '"');
         echo $this->gerar();
     }
+
+    /**
+     * @return int
+     */
+    public function getDiasProtesto(): int
+    {
+        return $this->diasProtesto;
+    }
+
+    /**
+     * @param int $diasProtesto
+     */
+    public function setDiasProtesto(int $diasProtesto): void
+    {
+        $this->diasProtesto = $diasProtesto;
+    }
+
 }
