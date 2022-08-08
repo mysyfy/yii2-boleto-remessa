@@ -249,7 +249,7 @@ class Bancoob extends AbstractRemessa implements RemessaContract
         $this->add(38, 47, Util::formatCnab(9, $boleto->getNossoNumero(), 10)); 
         $this->add(48, 49, Util::formatCnab(9, $boleto->getParcela(), 2));
         $this->add(50, 51, '01');
-        $this->add(52, 52, '1');
+        $this->add(52, 52, '4');
         $this->add(53, 57, '');
 
         $this->add(58, 58, $this->getCarteira()); // Tipo de Cobrança
@@ -425,7 +425,7 @@ class Bancoob extends AbstractRemessa implements RemessaContract
         $this->add(14, 16, '040'); // Versão do layout
         $this->add(17, 17, ''); // Reservados (Uso Banco)
         $this->add(18, 18, strlen(Util::onlyNumbers($this->getBeneficiario()->getDocumento())) == 14 ? '2' : '1'); // Tipo de inscrição da empresa
-        $this->add(19, 33, Util::formatCnab('9L', $this->getBeneficiario()->getDocumento(), 14)); // Numero de inscrição da empresa
+        $this->add(19, 34, Util::formatCnab('9L', $this->getBeneficiario()->getDocumento(), 15)); // Numero de inscrição da empresa
         $this->add(34, 53, ''); // Reservados (Uso Banco)        
         $this->add(54, 58, Util::formatCnab(9, $this->getAgencia(), 5)); // Agência do cedente
         $this->add(59, 59, Util::formatCnab(9, '', 1)); // Digito verificador da Agência do cedente
