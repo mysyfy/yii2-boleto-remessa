@@ -346,7 +346,7 @@ class Bancoob extends AbstractRemessa implements RemessaContract
 
         if($this->getDiasBaixa()) {
 
-            $sDataBaixa = $boleto->getDataVencimento()->modify('+' .$this->getDiasBaixa())->format('dmY');
+            $sDataBaixa = $boleto->getDataVencimento()->modify('+' .$this->getDiasBaixa().' days')->format('dmY');
 
         }
 
