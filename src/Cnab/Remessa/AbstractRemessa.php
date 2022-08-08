@@ -95,6 +95,13 @@ abstract class AbstractRemessa
     protected $agencia;
 
     /**
+     * DV da Agência
+     *
+     * @var int
+     */
+    protected $agenciaDv;
+
+    /**
      * Conta
      *
      * @var int
@@ -136,6 +143,7 @@ abstract class AbstractRemessa
      */
     public function __construct($params = [])
     {
+        $this->setAgenciaDv('0');
         Util::fillClass($this, $params);
     }
 
@@ -244,6 +252,32 @@ abstract class AbstractRemessa
     {
         return $this->agencia;
     }
+
+
+    /**
+     * Define o DV da agência
+     *
+     * @param $agencia
+     * @return $this
+     */
+    public function setAgenciaDv($agenciaDv)
+    {
+        $this->agenciaDv = (string)$agenciaDv;
+
+        return $this;
+    }
+
+
+    /**
+     * Retorna o DV da agência
+     *
+     * @return int
+     */
+    public function getAgenciaDv()
+    {
+        return $this->agenciaDv;
+    }
+
 
     /**
      * Define o número da conta
