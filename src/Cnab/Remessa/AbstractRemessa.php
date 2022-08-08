@@ -101,13 +101,19 @@ abstract class AbstractRemessa
      */
     protected $agenciaDv;
 
-
     /**
      * Qtde de dias para protesto
      *
      * @var int
      */
     protected $diasProtesto;
+
+    /**
+     * Qtde de dias para protesto
+     *
+     * @var int
+     */
+    protected $diasBaixa;
 
     /**
      * Conta
@@ -570,6 +576,22 @@ abstract class AbstractRemessa
     public function setDiasProtesto(int $diasProtesto): void
     {
         $this->diasProtesto = $diasProtesto;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDiasBaixa()
+    {
+        return $this->diasBaixa;
+    }
+
+    /**
+     * @param int $diasBaixa
+     */
+    public function setDiasBaixa(int $diasBaixa)
+    {
+        $this->diasBaixa = $diasBaixa;
     }
 
 }
