@@ -344,12 +344,14 @@ class Bancoob extends AbstractRemessa implements RemessaContract
 
         $sDataBaixa = 0;
         if($this->getDiasBaixa()) {
-            $sDataBaixa = $boleto->getDataVencimento()->modify('+' .$this->getDiasBaixa().' days')->format('dmY');
+            $dData      = new \DateTime('@'.$boleto->getDataVencimento()->getTimestamp());
+            $sDataBaixa = $dData->modify('+' .$this->getDiasBaixa().' days')->format('dmY');
         }
 
         $sDataCobrancaEncargos = $boleto->getDataVencimento()->modify('+1 day')->format('dmY');
         if($boleto->getJurosApos() > 0) {
-            $sDataCobrancaEncargos = $boleto->getDataVencimento()->modify('+'.$boleto->getJurosApos().' days')->format('dmY');
+            $dData      = new \DateTime('@'.$boleto->getDataVencimento()->getTimestamp());
+            $sDataCobrancaEncargos = $dData->modify('+'.$boleto->getJurosApos().' days')->format('dmY');
         }
 
         $this->add(1, 3, Util::onlyNumbers($this->getCodigoBanco())); //Código do Banco
