@@ -381,7 +381,12 @@ class Bancoob extends AbstractRemessa implements RemessaContract
         $this->add(15, 15, ''); // Reservado (Uso Banco)
         $this->add(16, 17, '01'); // Código de movimento remessa
         $this->add(18, 18, '3');
-        $this->add(19, 240, '');
+
+        $this->add(19, 59, Util::formatCnab('X', $boleto->getInstrucoes()[0], 40));
+        $this->add(60, 100, Util::formatCnab('X', $boleto->getInstrucoes()[1], 40));
+        $this->add(101, 141, Util::formatCnab('X', $boleto->getInstrucoes()[2], 40));
+        $this->add(142, 183, Util::formatCnab('X', $boleto->getInstrucoes()[3], 40));
+        $this->add(184, 224, Util::formatCnab('X', $boleto->getInstrucoes()[4], 40));
         
         return $this;
     }
