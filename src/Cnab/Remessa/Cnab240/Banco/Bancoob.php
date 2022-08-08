@@ -343,11 +343,13 @@ class Bancoob extends AbstractRemessa implements RemessaContract
         $this->iniciaDetalhe();
 
         $sDataBaixa = 0;
-
         if($this->getDiasBaixa()) {
-
             $sDataBaixa = $boleto->getDataVencimento()->modify('+' .$this->getDiasBaixa().' days')->format('dmY');
+        }
 
+        $sDataCobrancaEncargos = $boleto->getDataVencimento()->modify('+1 day')->format('dmY');
+        if($boleto->getJurosApos() > 0) {
+            $sDataCobrancaEncargos = $boleto->getDataVencimento()->modify('+'.$boleto->getJurosApos().' days')->format('dmY');
         }
 
         $this->add(1, 3, Util::onlyNumbers($this->getCodigoBanco())); //Código do Banco
@@ -357,8 +359,11 @@ class Bancoob extends AbstractRemessa implements RemessaContract
         $this->add(14, 14, Util::formatCnab('9', 'R', 1)); // Nº sequencial do registro de lote
         $this->add(15, 15, ''); // Reservado (Uso Banco)
         $this->add(16, 17, '01'); // Código de movimento remessa
-        $this->add(18, 89, Util::formatCnab(9, 0, 72));
-        $this->add(90, 99, '');
+
+        $this->add(18, 65, Util::formatCnab(9, 0, 48));
+        $this->add(66, 73, Util::formatCnab(9, $sDataCobrancaEncargos, 8));
+        $this->add(74, 88, Util::formatCnab(9, $boleto->getMulta(), 15, 2));
+        $this->add(89, 99, '');
         $this->add(100, 139, Util::formatCnab('X', $boleto->getInstrucoes()[0], 40));
         $this->add(140, 179, Util::formatCnab('X', $boleto->getInstrucoes()[1], 40));
         $this->add(180, 199, '');
