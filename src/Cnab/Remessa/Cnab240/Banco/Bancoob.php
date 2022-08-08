@@ -281,8 +281,8 @@ class Bancoob extends AbstractRemessa implements RemessaContract
         $this->add(166, 180, Util::formatCnab(9, 0, 15, 2)); //Valor do IOF a ser recolhido
         $this->add(181, 195, Util::formatCnab(9, 0, 15, 2)); //Valor do abatimento
         $this->add(196, 220, Util::formatCnab('X', $boleto->getNumeroDocumento(), 25)); //Identificação do título na empresa
-        $this->add(221, 221, Util::formatCnab(9, 1, 1)); //Código para protesto
-        $this->add(222, 223, Util::formatCnab(9, 0, 2)); //Número de dias para protesto
+        $this->add(221, 221, Util::formatCnab(9, $boleto->getDiasProtesto() > 0 ? 1 : 3, 1)); //Código para protesto
+        $this->add(222, 223, Util::formatCnab(9, $boleto->getDiasProtesto(), 2)); //Número de dias para protesto
         $this->add(224, 224, Util::formatCnab(9, 0, 1)); //Código para Baixa/Devolução
         $this->add(225, 227, '');
         $this->add(228, 229, '09'); // Código da moeda
