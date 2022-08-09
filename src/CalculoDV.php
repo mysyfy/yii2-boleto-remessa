@@ -195,7 +195,7 @@ class CalculoDV
         $dv = Util::modulo11($agencia, 2, 9, 0, 'P');
         return $dv == 11 ? 0 : $dv;
     }
-    
+
     public static function bradescoContaCorrente($contaCorrente)
     {
         return Util::modulo11($contaCorrente, 2, 9, 0, 'P');

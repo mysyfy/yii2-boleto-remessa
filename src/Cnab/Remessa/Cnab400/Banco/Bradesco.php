@@ -166,14 +166,10 @@ class Bradesco extends AbstractRemessa implements RemessaContract
             Util::formatCnab('9', $this->getContaDv() ?: CalculoDV::bradescoContaCorrente($this->getConta()), 1);
 
         $this->add(1, 1, '1');
-        $this->add(2, 6, '');
-        $this->add(7, 7, '');
-        $this->add(8, 12, '');
-        $this->add(13, 19, '');
-        $this->add(20, 20, '');
+        $this->add(2, 20, Util::formatCnab('9', 0, 19));
         $this->add(21, 37, Util::formatCnab('9', $beneficiario_id, 17));
         $this->add(38, 62, Util::formatCnab('X', $boleto->getNumeroControle(), 25)); // numero de controle
-        $this->add(63, 65, $this->getCodigoBanco());
+        $this->add(63, 65, Util::formatCnab('9', 0, 3));
         $this->add(66, 66, $boleto->getMulta() > 0 ? '2' : '0');
         $this->add(67, 70, Util::formatCnab('9', $boleto->getMulta() > 0 ? $boleto->getMulta() : '0', 4, 2));
         $this->add(71, 82, Util::formatCnab('9', $boleto->getNossoNumero(), 12));
@@ -223,8 +219,35 @@ class Bradesco extends AbstractRemessa implements RemessaContract
         $this->add(275, 314, Util::formatCnab('X', $boleto->getPagador()->getEndereco(), 40));
         $this->add(315, 326, Util::formatCnab('X', $boleto->getPagador()->getBairro(), 12));
         $this->add(327, 334, Util::formatCnab('9L', $boleto->getPagador()->getCep(), 8));
-        $this->add(335, 394, Util::formatCnab('X', $boleto->getSacadorAvalista() ? $boleto->getSacadorAvalista()->getNome() : '', 60));
+        $this->add(335, 394, Util::formatCnab('X', $boleto->getInstrucoes()[0], 60));
         $this->add(395, 400, Util::formatCnab('9', $this->iRegistros + 1, 6));
+
+        if ($boleto->getMulta() > 0) {
+
+            $this->iniciaDetalhe();
+
+            $this->add(1, 1, 2);
+            $this->add(2, 81, Util::formatCnab('X', $boleto->getInstrucoes()[1], 80));
+            $this->add(82, 161, Util::formatCnab('X', $boleto->getInstrucoes()[2], 80));
+            $this->add(162, 241, Util::formatCnab('X', $boleto->getInstrucoes()[3], 80));
+            $this->add(242, 321, Util::formatCnab('X', $boleto->getInstrucoes()[4], 80));
+            $this->add(322, 359, Util::formatCnab('9', 0, 38));
+            $this->add(360, 366, '');
+
+            $this->add(367, 369, Util::formatCnab('9', $boleto->getCarteira(), 3));
+            $this->add(370, 374, Util::formatCnab('9', $boleto->getAgencia(), 5));
+            $this->add(375, 381, Util::formatCnab('9', (int) $boleto->getConta(), 7));
+            $this->add(382, 382, Util::formatCnab('9', $boleto->getContaDv(), 1));
+
+            $this->add(383, 394, Util::formatCnab('9', $boleto->getNossoNumero(), 12));
+
+
+
+            $this->add(395, 400, Util::formatCnab('9', $this->iRegistros + 1, 6));
+
+        }
+
+
 
         return $this;
     }
