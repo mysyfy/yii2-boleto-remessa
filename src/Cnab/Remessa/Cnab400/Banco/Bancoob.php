@@ -50,6 +50,9 @@ class Bancoob extends AbstractRemessa implements RemessaContract
      */
     public function __construct(array $params = [])
     {
+
+        $this->setResponsavelEntregaBoletos(2);
+
         parent::__construct($params);
         $this->addCampoObrigatorio('convenio');
     }
@@ -208,7 +211,7 @@ class Bancoob extends AbstractRemessa implements RemessaContract
 
         $this->add(161, 166, Util::formatCnab('9', $valorMora, 6));
         $this->add(167, 172, Util::formatCnab('9', $boleto->getMulta() * 10000, 6));
-        $this->add(173, 173, '2'); //Tipo de distribuição: 1 - Cooperativa 2 - Cliente
+        $this->add(173, 173, $this->getResponsavelEntregaBoletos()); //Tipo de distribuição: 1 - Cooperativa 2 - Cliente
         $this->add(174, 179, $boleto->getDesconto() > 0 ? $boleto->getDataDesconto()->format('dmy') : '000000');
         $this->add(180, 192, Util::formatCnab('9', $boleto->getDesconto(), 13, 2));
         $this->add(193, 193, '9');
