@@ -66,7 +66,7 @@ class Bancoob extends AbstractRemessa implements RemessaContract
      * @var numeric
      */
     protected $valorTotalTitulos = 0;
-    
+
     /**
      * Define as carteiras disponíveis para cada banco
      *
@@ -101,14 +101,14 @@ class Bancoob extends AbstractRemessa implements RemessaContract
      * @var string
      */
     protected $sequenciaSegmento = 0;
-    
+
     /**
      * Quantidade de registros do lote.
      */
     private $qtyRegistrosLote;
 
 
-    
+
     /**
      * @return mixed
      */
@@ -158,7 +158,7 @@ class Bancoob extends AbstractRemessa implements RemessaContract
 
         return $this;
     }
-    
+
     /**
      * Retorna o codigo de transmissão.
      *
@@ -172,7 +172,7 @@ class Bancoob extends AbstractRemessa implements RemessaContract
             . Util::formatCnab('9', $this->getConta(), 12)
             . Util::formatCnab('9', $this->getContaDv(), 1);
     }
-    
+
     /**
      * @return $this
      */
@@ -210,7 +210,7 @@ class Bancoob extends AbstractRemessa implements RemessaContract
 
     public function addBoleto(BoletoContract $boleto, $nSequencialLote = null)
     {
-                
+
         $this->sequenciaSegmento++;
         $this->segmentoP($nSequencialLote + $nSequencialLote + $this->sequenciaSegmento, $boleto);
         $this->sequenciaSegmento++;
@@ -246,7 +246,7 @@ class Bancoob extends AbstractRemessa implements RemessaContract
         $this->add(36, 36, Util::formatCnab('9', $this->getContaDv(), 1));
         $this->add(37, 37, ''); // Reservado (Uso Banco)
 
-        $this->add(38, 47, Util::formatCnab(9, $boleto->getNossoNumero(), 10)); 
+        $this->add(38, 47, Util::formatCnab(9, $boleto->getNossoNumero(), 10));
         $this->add(48, 49, Util::formatCnab(9, $boleto->getParcela(), 2));
         $this->add(50, 51, '01');
         $this->add(52, 52, '4');
@@ -276,7 +276,7 @@ class Bancoob extends AbstractRemessa implements RemessaContract
         $this->add(119, 126, Util::formatCnab(9, $boleto->getDataVencimento()->format('dmY'), 8)); //Data do juros de mora / data de vencimento do titulo
         $this->add(127, 141, Util::formatCnab(9, $juros, 15, 2)); //Valor da mora/dia ou Taxa mensal
         $this->add(142, 142, '0');
-        $this->add(143, 150, '00000000'); 
+        $this->add(143, 150, '00000000');
         $this->add(151, 165, Util::formatCnab(9, $boleto->getDesconto(), 15, 2)); //Valor ou Percentual do desconto concedido //TODO
         $this->add(166, 180, Util::formatCnab(9, 0, 15, 2)); //Valor do IOF a ser recolhido
         $this->add(181, 195, Util::formatCnab(9, 0, 15, 2)); //Valor do abatimento
@@ -286,11 +286,11 @@ class Bancoob extends AbstractRemessa implements RemessaContract
         $this->add(224, 224, Util::formatCnab(9, 0, 1)); //Código para Baixa/Devolução
         $this->add(225, 227, '');
         $this->add(228, 229, '09'); // Código da moeda
-        $this->add(230, 239, '0000000000'); 
+        $this->add(230, 239, '0000000000');
         $this->add(240, 240, ''); // Reservado (Uso Banco)
 
         $this->valorTotalTitulos += $boleto->getValor();
-        
+
         return $this;
     }
 
@@ -327,7 +327,7 @@ class Bancoob extends AbstractRemessa implements RemessaContract
         $this->add(210, 212, '000'); // Identificador de carne 000 - Não possui, 001 - Possui Carné
         $this->add(213, 232, '');
         $this->add(233, 240, '');
-        
+
         return $this;
     }
 
@@ -350,8 +350,8 @@ class Bancoob extends AbstractRemessa implements RemessaContract
 
         $sDataCobrancaEncargos = $boleto->getDataVencimento()->modify('+1 day')->format('dmY');
         if($boleto->getJurosApos() > 0) {
-            $dData                  = new \DateTime('@'.$boleto->getDataVencimento()->getTimestamp());
-            $sDataCobrancaEncargos  = $dData->modify('+'.$boleto->getJurosApos().' days')->format('dmY');
+            $dData      = new \DateTime('@'.$boleto->getDataVencimento()->getTimestamp());
+            $sDataCobrancaEncargos = $dData->modify('+'.$boleto->getJurosApos().' days')->format('dmY');
         }
 
         $this->add(1, 3, Util::onlyNumbers($this->getCodigoBanco())); //Código do Banco
@@ -363,13 +363,13 @@ class Bancoob extends AbstractRemessa implements RemessaContract
         $this->add(16, 17, '01'); // Código de movimento remessa
 
         $this->add(18, 65, Util::formatCnab(9, 0, 48));
-        $this->add(66, 73, Util::formatCnab(9, $sDataCobrancaEncargos, 8));
-        $this->add(74, 88, Util::formatCnab(9, $boleto->getMulta(), 15, 2));
-        $this->add(89, 99, '');
+        $this->add(66, 66, Util::formatCnab(9, 2, 1));
+        $this->add(67, 74, Util::formatCnab(9, $sDataCobrancaEncargos, 8));
+        $this->add(75, 89, Util::formatCnab(9, $boleto->getMulta(), 15, 2));
+        $this->add(90, 99, '');
         $this->add(100, 139, Util::formatCnab('X', $boleto->getInstrucoes()[0], 40));
         $this->add(140, 179, Util::formatCnab('X', $boleto->getInstrucoes()[1], 40));
-        $this->add(180, 198, '');
-        $this->add(199, 199, '2');
+        $this->add(180, 199, '');
         $this->add(200, 207, Util::formatCnab(9, $sDataBaixa, 8));
         $this->add(208, 215, Util::formatCnab(9, 0, 8));
         $this->add(216, 216, '');
@@ -377,7 +377,7 @@ class Bancoob extends AbstractRemessa implements RemessaContract
         $this->add(229, 230, '');
         $this->add(231, 231, '0');
         $this->add(232, 240, '');
-        
+
         return $this;
     }
 
@@ -406,10 +406,10 @@ class Bancoob extends AbstractRemessa implements RemessaContract
         $this->add(99, 138, Util::formatCnab('X', $boleto->getInstrucoes()[2], 40));
         $this->add(139, 178, Util::formatCnab('X', $boleto->getInstrucoes()[3], 40));
         $this->add(179, 218, Util::formatCnab('X', $boleto->getInstrucoes()[4], 40));
-        
+
         return $this;
     }
-    
+
     /**
      * @return $this
      */
@@ -425,11 +425,11 @@ class Bancoob extends AbstractRemessa implements RemessaContract
         $this->add(24, 29, Util::formatCnab(9, ($this->qtyRegistrosLote + 4), 6)); // Qtd de lotes do arquivo
         $this->add(30, 35, Util::formatCnab(9, 0, 6));
         $this->add(36, 240, ''); // Reservado (Uso Banco)
-        
+
         return $this;
     }
 
-    protected function headerLote() 
+    protected function headerLote()
     {
         $this->iniciaHeaderLote();
 
@@ -447,7 +447,7 @@ class Bancoob extends AbstractRemessa implements RemessaContract
         $this->add(54, 58, Util::formatCnab(9, $this->getAgencia(), 5)); // Agência do cedente
         $this->add(59, 59, Util::formatCnab(9, '', 1)); // Digito verificador da Agência do cedente
         $this->add(60, 71, Util::formatCnab(9, $this->getConta(), 12)); // Numero da conta corrente
-        $this->add(72, 72, Util::formatCnab('9', $this->getContaDv(), 1));        
+        $this->add(72, 72, Util::formatCnab('9', $this->getContaDv(), 1));
         $this->add(73, 73, ''); // Reservados (Uso Banco)
         $this->add(74, 103, Util::formatCnab('X', $this->getBeneficiario()->getNome(), 30)); // Nome do cedente
         $this->add(104, 143, ''); // Mensagem 1
