@@ -88,6 +88,14 @@ abstract class AbstractRemessa
     protected $idremessa;
 
     /**
+     * Responsável pela entrega dos boletos
+     *
+     * @var int
+     */
+    protected $responsavelEntregaBoletos;
+
+
+    /**
      * Agência
      *
      * @var int
@@ -593,5 +601,23 @@ abstract class AbstractRemessa
     {
         $this->diasBaixa = $diasBaixa;
     }
+
+    /**
+     * @return int
+     */
+    public function getResponsavelEntregaBoletos()
+    {
+        return $this->responsavelEntregaBoletos;
+    }
+
+    /**
+     * @param int $responsavelEntregaBoletos
+     */
+    public function setResponsavelEntregaBoletos($responsavelEntregaBoletos)
+    {
+        $this->responsavelEntregaBoletos = $responsavelEntregaBoletos;
+    }
+
+
 
 }
