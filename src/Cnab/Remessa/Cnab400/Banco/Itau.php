@@ -205,7 +205,7 @@ class Itau extends AbstractRemessa implements RemessaContract
         $this->add(150, 150, $boleto->getAceite());
         $this->add(151, 156, $boleto->getDataDocumento()->format('dmy'));
         $this->add(157, 158, self::INSTRUCAO_SEM);
-        $this->add(159, 160, self::INSTRUCAO_VALOR_SOMA_MORA);
+        $this->add(159, 160, self::INSTRUCAO_SEM);
         if ($boleto->getDiasProtesto() > 0) {
             $this->add(157, 158, self::INSTRUCAO_PROTESTAR_VENC_XX);
         } elseif ($boleto->getDiasBaixaAutomatica() > 0) {
@@ -235,7 +235,7 @@ class Itau extends AbstractRemessa implements RemessaContract
         $this->add(392, 393, Util::formatCnab('9', $boleto->getDiasProtesto($boleto->getDiasBaixaAutomatica()), 2));
         $this->add(394, 394, '');
         $this->add(395, 400, Util::formatCnab('9', $this->iRegistros + 1, 6));
-        
+
         // Verifica multa
         if ($boleto->getMulta() > 0) {
             // Inicia uma nova linha de detalhe e marca com a atual de edição
@@ -243,7 +243,7 @@ class Itau extends AbstractRemessa implements RemessaContract
             // Campo adicional para a multa
             $this->add(1, 1, Util::formatCnab('9', '2', 1)); // Adicional Multa
             $this->add(2, 2, Util::formatCnab('X', '2', 1)); // Cód 2 = Informa Valor em percentual
-            $this->add(3, 10, $boleto->getDataVencimento()->format('dmY')); // Data da multa
+            $this->add(3, 10, is_numeric($boleto->getJurosApos()) ? $boleto->getDataVencimento()->copy()->addDays(1)->format('dmY') : $boleto->getDataVencimento()->copy()->addDays($boleto->getJurosApos())->format('dmY')); // Data da multa
             $this->add(11, 23, Util::formatCnab('9', Util::nFloat($boleto->getMulta(), 2), 13));
             $this->add(24, 394, '');
             $this->add(395, 400, Util::formatCnab('9', $this->iRegistros + 1, 6));

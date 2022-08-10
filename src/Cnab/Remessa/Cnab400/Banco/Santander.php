@@ -220,6 +220,34 @@ class Santander extends AbstractRemessa implements RemessaContract
         $this->add(394, 394, '');
         $this->add(395, 400, Util::formatCnab('9', $this->iRegistros + 1, 6));
 
+
+        $this->iniciaDetalhe();
+        $this->add(1, 1, '2');
+        $this->add(2, 12, '');
+        $this->add(50, 99, Util::formatCnab('X', $boleto->getInstrucoes()[0], 50));
+        $this->add(395, 400, Util::formatCnab('9', $this->iRegistros + 1, 6));
+
+        $this->iniciaDetalhe();
+        $this->add(1, 1, '2');
+        $this->add(2, 12, '');
+        $this->add(50, 99, Util::formatCnab('X', $boleto->getInstrucoes()[1], 50));
+        $this->add(395, 400, Util::formatCnab('9', $this->iRegistros + 1, 6));
+
+        $this->iniciaDetalhe();
+        $this->add(1, 1, '2');
+        $this->add(2, 12, '');
+        $this->add(50, 99, Util::formatCnab('X', $boleto->getInstrucoes()[2], 50));
+        $this->add(395, 400, Util::formatCnab('9', $this->iRegistros + 1, 6));
+
+        $this->iniciaDetalhe();
+        $this->add(1, 1, '2');
+        $this->add(2, 12, '');
+        $this->add(50, 99, Util::formatCnab('X', $boleto->getInstrucoes()[3], 50));
+        $this->add(395, 400, Util::formatCnab('9', $this->iRegistros + 1, 6));
+
+
+
+
         return $this;
     }
 
