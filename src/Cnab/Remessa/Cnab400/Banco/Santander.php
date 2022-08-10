@@ -44,7 +44,7 @@ class Santander extends AbstractRemessa implements RemessaContract
     public function __construct(array $params = [])
     {
         parent::__construct($params);
-        $this->addCampoObrigatorio('codigoCliente');
+        $this->addCampoObrigatorio('codigoCliente', 'codigoTransmissao');
     }
 
 
@@ -75,6 +75,8 @@ class Santander extends AbstractRemessa implements RemessaContract
      * @var null
      */
     protected $fimArquivo = "\r\n";
+
+
 
     /**
      * Codigo do cliente junto ao banco.
@@ -107,18 +109,6 @@ class Santander extends AbstractRemessa implements RemessaContract
         return $this;
     }
 
-    /**
-     * Retorna o codigo de transmissão.
-     *
-     * @return string
-     * @throws \Exception
-     */
-    public function getCodigoTransmissao()
-    {
-        return Util::formatCnab('9', $this->getAgencia(), 4)
-            . Util::formatCnab('9', $this->getCodigoCliente(), 8)
-            . Util::formatCnab('9', Util::numberFormatGeral($this->getConta(), 7), 8);
-    }
 
     /**
      * Valor total dos titulos.
@@ -214,35 +204,49 @@ class Santander extends AbstractRemessa implements RemessaContract
         $this->add(352, 381, Util::formatCnab('X', $boleto->getSacadorAvalista() ? $boleto->getSacadorAvalista()->getNome() : '', 30));
         $this->add(382, 382, '');
         $this->add(383, 383, 'I');
-        $this->add(384, 385, substr($this->getConta(), -2));
+        $this->add(384, 385, substr($boleto->variaveis_adicionais['contaBanco'].$boleto->variaveis_adicionais['DVcontaBanco'], -2));
         $this->add(386, 391, '');
         $this->add(392, 393, Util::formatCnab('9', $boleto->getDiasProtesto('0'), 2));
         $this->add(394, 394, '');
         $this->add(395, 400, Util::formatCnab('9', $this->iRegistros + 1, 6));
 
-
         $this->iniciaDetalhe();
         $this->add(1, 1, '2');
         $this->add(2, 12, '');
+        $this->add(48, 49, '01');
+        $this->add(18, 37, Util::formatCnab('9', $this->getCodigoTransmissao(), 20));
         $this->add(50, 99, Util::formatCnab('X', $boleto->getInstrucoes()[0], 50));
+        $this->add(383, 383, 'I');
+        $this->add(384, 385, substr($boleto->variaveis_adicionais['contaBanco'].$boleto->variaveis_adicionais['DVcontaBanco'], -2));
         $this->add(395, 400, Util::formatCnab('9', $this->iRegistros + 1, 6));
 
         $this->iniciaDetalhe();
         $this->add(1, 1, '2');
         $this->add(2, 12, '');
+        $this->add(48, 49, '01');
+        $this->add(18, 37, Util::formatCnab('9', $this->getCodigoTransmissao(), 20));
         $this->add(50, 99, Util::formatCnab('X', $boleto->getInstrucoes()[1], 50));
+        $this->add(383, 383, 'I');
+        $this->add(384, 385, substr($boleto->variaveis_adicionais['contaBanco'].$boleto->variaveis_adicionais['DVcontaBanco'], -2));
         $this->add(395, 400, Util::formatCnab('9', $this->iRegistros + 1, 6));
 
         $this->iniciaDetalhe();
         $this->add(1, 1, '2');
         $this->add(2, 12, '');
+        $this->add(48, 49, '01');
+        $this->add(18, 37, Util::formatCnab('9', $this->getCodigoTransmissao(), 20));
         $this->add(50, 99, Util::formatCnab('X', $boleto->getInstrucoes()[2], 50));
+        $this->add(383, 383, 'I');
+        $this->add(384, 385, substr($boleto->variaveis_adicionais['contaBanco'].$boleto->variaveis_adicionais['DVcontaBanco'], -2));
         $this->add(395, 400, Util::formatCnab('9', $this->iRegistros + 1, 6));
 
         $this->iniciaDetalhe();
         $this->add(1, 1, '2');
         $this->add(2, 12, '');
+        $this->add(48, 49, '01');
         $this->add(50, 99, Util::formatCnab('X', $boleto->getInstrucoes()[3], 50));
+        $this->add(383, 383, 'I');
+        $this->add(384, 385, substr($boleto->variaveis_adicionais['contaBanco'].$boleto->variaveis_adicionais['DVcontaBanco'], -2));
         $this->add(395, 400, Util::formatCnab('9', $this->iRegistros + 1, 6));
 
 

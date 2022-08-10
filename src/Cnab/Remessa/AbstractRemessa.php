@@ -94,6 +94,12 @@ abstract class AbstractRemessa
      */
     protected $responsavelEntregaBoletos;
 
+    /**
+     * Codigo de Transmissao do arquivo
+     *
+     * @var string
+     */
+    protected $codigoTransmissao;
 
     /**
      * Agência
@@ -617,6 +623,24 @@ abstract class AbstractRemessa
     {
         $this->responsavelEntregaBoletos = $responsavelEntregaBoletos;
     }
+
+    /**
+     * @return string
+     */
+    public function getCodigoTransmissao()
+    {
+        return $this->codigoTransmissao;
+    }
+
+    /**
+     * @param string $codigoTransmissao
+     */
+    public function setCodigoTransmissao($codigoTransmissao)
+    {
+        $this->codigoTransmissao = $codigoTransmissao;
+    }
+
+
 
 
 
