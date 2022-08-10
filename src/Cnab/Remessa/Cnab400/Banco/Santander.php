@@ -148,8 +148,10 @@ class Santander extends AbstractRemessa implements RemessaContract
         $this->add(1, 1, '1');
         $this->add(2, 3, strlen(Util::onlyNumbers($this->getBeneficiario()->getDocumento())) == 14 ? '02' : '01');
         $this->add(4, 17, Util::formatCnab('9L', $this->getBeneficiario()->getDocumento(), 14));
-        $this->add(18, 37, Util::formatCnab('9', $this->getCodigoTransmissao(), 20));
-        $this->add(38, 62, Util::formatCnab('X', $boleto->getNumeroControle(), 25)); // numero de controle
+        $this->add(18, 32, Util::formatCnab('9', $this->getCodigoTransmissao(), 15));
+        $this->add(33, 43, Util::formatCnab('9', $boleto->getNumero(), 11));
+
+//        $this->add(38, 62, Util::formatCnab('X', $boleto->getNumeroControle(), 25)); // numero de controle
         $this->add(63, 70, Util::numberFormatGeral($boleto->getNossoNumero(), 8));
         $this->add(71, 76, '000000');
         $this->add(77, 77, '');
@@ -158,9 +160,10 @@ class Santander extends AbstractRemessa implements RemessaContract
         $this->add(83, 84, '00');
         $this->add(85, 97, Util::formatCnab('9', 0, 13, 2));
         $this->add(98, 101, '');
-        $this->add(102, 107, $boleto->getJurosApos() === 0 ? '000000' : $boleto->getDataVencimento()->copy()->addDays($boleto->getJurosApos())->format('dmy'));
+        $this->add(102, 107, $boleto->getJurosApos() === 0 ? $boleto->getDataVencimento()->copy()->addDays(1)->format('dmy') : $boleto->getDataVencimento()->copy()->addDays($boleto->getJurosApos())->format('dmy'));
         $this->add(108, 108, $this->getCarteiraNumero() > 200 ? '1' : '5');
         $this->add(109, 110, self::OCORRENCIA_REMESSA); // REGISTRO
+
         if ($boleto->getStatus() == $boleto::STATUS_BAIXA) {
             $this->add(109, 110, self::OCORRENCIA_PEDIDO_BAIXA); // BAIXA
         }
@@ -171,7 +174,7 @@ class Santander extends AbstractRemessa implements RemessaContract
         $this->add(121, 126, $boleto->getDataVencimento()->format('dmy'));
         $this->add(127, 139, Util::formatCnab('9', $boleto->getValor(), 13, 2));
         $this->add(140, 142, $this->getCodigoBanco());
-        $this->add(143, 147, '00000');
+        $this->add(143, 147, Util::formatCnab('9', $this->getAgencia().$this->getAgenciaDv(), 5));
         $this->add(148, 149, $boleto->getEspecieDocCodigo());
         $this->add(150, 150, $boleto->getAceite());
         $this->add(151, 156, $boleto->getDataDocumento()->format('dmy'));
@@ -213,8 +216,8 @@ class Santander extends AbstractRemessa implements RemessaContract
         $this->iniciaDetalhe();
         $this->add(1, 1, '2');
         $this->add(2, 12, '');
-        $this->add(48, 49, '01');
         $this->add(18, 37, Util::formatCnab('9', $this->getCodigoTransmissao(), 20));
+        $this->add(48, 49, '01');
         $this->add(50, 99, Util::formatCnab('X', $boleto->getInstrucoes()[0], 50));
         $this->add(383, 383, 'I');
         $this->add(384, 385, substr($boleto->variaveis_adicionais['contaBanco'].$boleto->variaveis_adicionais['DVcontaBanco'], -2));
@@ -233,8 +236,8 @@ class Santander extends AbstractRemessa implements RemessaContract
         $this->iniciaDetalhe();
         $this->add(1, 1, '2');
         $this->add(2, 12, '');
-        $this->add(48, 49, '01');
         $this->add(18, 37, Util::formatCnab('9', $this->getCodigoTransmissao(), 20));
+        $this->add(48, 49, '01');
         $this->add(50, 99, Util::formatCnab('X', $boleto->getInstrucoes()[2], 50));
         $this->add(383, 383, 'I');
         $this->add(384, 385, substr($boleto->variaveis_adicionais['contaBanco'].$boleto->variaveis_adicionais['DVcontaBanco'], -2));
@@ -243,14 +246,12 @@ class Santander extends AbstractRemessa implements RemessaContract
         $this->iniciaDetalhe();
         $this->add(1, 1, '2');
         $this->add(2, 12, '');
+        $this->add(18, 37, Util::formatCnab('9', $this->getCodigoTransmissao(), 20));
         $this->add(48, 49, '01');
         $this->add(50, 99, Util::formatCnab('X', $boleto->getInstrucoes()[3], 50));
         $this->add(383, 383, 'I');
         $this->add(384, 385, substr($boleto->variaveis_adicionais['contaBanco'].$boleto->variaveis_adicionais['DVcontaBanco'], -2));
         $this->add(395, 400, Util::formatCnab('9', $this->iRegistros + 1, 6));
-
-
-
 
         return $this;
     }
