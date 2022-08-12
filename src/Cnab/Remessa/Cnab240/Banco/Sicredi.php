@@ -114,7 +114,7 @@ class Sicredi extends AbstractRemessa implements RemessaContract
         $this->add(8, 8, '0');
         $this->add(9, 17, '');
         $this->add(18, 18, strlen(Util::onlyNumbers($this->getBeneficiario()->getDocumento())) == 14 ? '2' : '1'); // Tipo de inscrição da empresa
-        $this->add(19, 32, Util::formatCnab('9', $this->getBeneficiario()->getDocumento(), 14));
+        $this->add(19, 32, Util::formatCnab('9', Util::onlyNumbers($this->getBeneficiario()->getDocumento()), 14));
         $this->add(33, 52, '');
         $this->add(53, 57, Util::formatCnab('9', $this->getAgencia(), 5));
         $this->add(58, 58, '');
@@ -150,7 +150,7 @@ class Sicredi extends AbstractRemessa implements RemessaContract
         $this->add(14, 16, '040'); // Versão do layout
         $this->add(17, 17, ''); // Reservados (Uso Banco)
         $this->add(18, 18, strlen(Util::onlyNumbers($this->getBeneficiario()->getDocumento())) == 14 ? '2' : '1'); // Tipo de inscrição da empresa
-        $this->add(19, 33, Util::formatCnab('9L', $this->getBeneficiario()->getDocumento(), 15)); // Numero de inscrição da empresa
+        $this->add(19, 33, Util::formatCnab('9L', Util::onlyNumbers($this->getBeneficiario()->getDocumento()), 15)); // Numero de inscrição da empresa
         $this->add(34, 53, ''); // Reservados (Uso Banco)
         $this->add(54, 58, Util::formatCnab(9, $this->getAgencia(), 5)); // Agência do cedente
         $this->add(59, 59, ''); // Digito verificador da Agência do cedente
