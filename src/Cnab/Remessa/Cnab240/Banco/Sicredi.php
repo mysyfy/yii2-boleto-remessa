@@ -94,7 +94,14 @@ class Sicredi extends AbstractRemessa implements RemessaContract
      * @var string
      */
     protected $sequenciaSegmento = 0;
-        
+
+    /**
+     * Valor Total dos Titulos
+     *
+     * @var numeric
+     */
+    protected $valorTotalTitulos = 0;    
+
     /**
      * @return $this
      */
