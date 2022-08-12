@@ -329,7 +329,7 @@ class Sicredi extends AbstractRemessa implements RemessaContract
         if(strlen($ageDV) > 1){
             $ageDV = '0';
         }
-        $this->add(216, 216, Util::formatCnab('9', $ageDV, 5));
+        $this->add(216, 216, Util::formatCnab('9', $ageDV, 1));
         $this->add(217, 228, Util::formatCnab(9, $this->getConta(), 12)); // Numero da conta corrente
         $this->add(229, 229, Util::formatCnab('9', $this->getContaDv(), 1));
         $this->add(230, 230, '');
