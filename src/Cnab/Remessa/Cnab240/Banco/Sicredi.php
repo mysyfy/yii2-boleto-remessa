@@ -89,6 +89,13 @@ class Sicredi extends AbstractRemessa implements RemessaContract
     protected $fimArquivo = "\r\n";
 
     /**
+     * Sequencia Segmento
+     *
+     * @var string
+     */
+    protected $sequenciaSegmento = 0;
+        
+    /**
      * @return $this
      */
     protected function header()
