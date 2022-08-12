@@ -185,7 +185,7 @@ class Bancoob extends AbstractRemessa implements RemessaContract
         $this->add(8, 8, '0');
         $this->add(9, 17, '');
         $this->add(18, 18, strlen(Util::onlyNumbers($this->getBeneficiario()->getDocumento())) == 14 ? '2' : '1'); // Tipo de inscrição da empresa
-        $this->add(19, 32, Util::formatCnab('9L', $this->getBeneficiario()->getNomeDocumento(), 14));
+        $this->add(19, 32, Util::formatCnab('9L', $this->getBeneficiario()->getDocumento(), 14));
         $this->add(33, 52, '');
         $this->add(53, 57, Util::formatCnab('9', $this->getAgencia(), 5));
         $this->add(58, 58, Util::formatCnab('9', $this->getAgenciaDv(), 1));
