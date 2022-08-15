@@ -203,7 +203,7 @@ class Sicredi extends AbstractRemessa implements RemessaContract
         $this->add(24, 35, Util::formatCnab(9, $this->getConta(), 12)); // Numero da conta corrente
         $this->add(36, 36, Util::formatCnab('9', $this->getContaDv(), 1));
         $this->add(37, 37, ''); // Reservado (Uso Banco)
-        $this->add(38, 57, Util::formatCnab('9R', Util::onlyNumbers($boleto->getNossoNumero()), 20));
+        $this->add(38, 57, Util::formatCnab('9L', Util::onlyNumbers($boleto->getNossoNumero()), 20));
         $this->add(58, 58, '1');
         $this->add(59, 59, '1');
         $this->add(60, 60, '2');
@@ -222,7 +222,7 @@ class Sicredi extends AbstractRemessa implements RemessaContract
         if ($boleto->getJuros() > 0) {
             $juros = Util::percent($boleto->getValor(), $boleto->getJuros()) / 30;
         }
-        $this->add(118, 118, $juros = 0 ? 3 : 1); //Código do juros de mora - 1 = Valor fixo ate a data informada – Informar o valor no campo “valor de desconto a ser concedido”.
+        $this->add(118, 118, $juros == 0 ? 3 : 1); //Código do juros de mora - 1 = Valor fixo ate a data informada – Informar o valor no campo “valor de desconto a ser concedido”.
         $this->add(119, 126, '00000000'); //Data do juros de mora / data de vencimento do titulo
         $this->add(127, 141, Util::formatCnab(9, $juros, 15, 2)); //Valor da mora/dia ou Taxa mensal
 
@@ -230,8 +230,8 @@ class Sicredi extends AbstractRemessa implements RemessaContract
         if ($boleto->getDesconto() > 0) {
             $desconto = $boleto->getDesconto();
         }
-        $this->add(142, 142, $desconto = 0 ? 0 : 1);
-        $this->add(143, 150, $boleto->getDataDesconto()->format('dmY'));
+        $this->add(142, 142, $desconto == 0 ? 0 : 1);
+        $this->add(143, 150, $desconto == 0 ? '00000000' : $boleto->getDataDesconto()->format('dmY'));
         $this->add(151, 165, Util::formatCnab(9, $desconto, 15, 2)); //Valor ou Percentual do desconto concedido //TODO
         $this->add(166, 180, Util::formatCnab(9, 0, 15, 2)); //Valor do IOF a ser recolhido
         $this->add(181, 195, Util::formatCnab(9, 0, 15, 2)); //Valor do abatimento
