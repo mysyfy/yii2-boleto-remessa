@@ -455,12 +455,15 @@ final class Util
     public static function formatCnab($tipo, $valor, $tamanho, $dec = 0, $sFill = '')
     {
         $tipo = self::upper($tipo);
-        if (in_array($tipo, array('9', 9, 'N', '9L', 'NL'))) {
+        if (in_array($tipo, array('9', 9, 'N', '9L', 'NL', '9R'))) {
             if ($tipo == '9L' || $tipo == 'NL') {
                 $valor = self::onlyNumbers($valor);
             }
             $left = '';
-            $sFill = 0;
+            if($tipo == '9R'){
+                $left = '-';
+            }
+            $sFill = 0;            
             $type = 's';
             $valor = ($dec > 0) ? sprintf("%.{$dec}f", $valor) : $valor;
             $valor = str_replace(array(',', '.'), '', $valor);
