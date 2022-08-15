@@ -203,7 +203,7 @@ class Sicredi extends AbstractRemessa implements RemessaContract
         $this->add(24, 35, Util::formatCnab(9, $this->getConta(), 12)); // Numero da conta corrente
         $this->add(36, 36, Util::formatCnab('9', $this->getContaDv(), 1));
         $this->add(37, 37, ''); // Reservado (Uso Banco)
-        $this->add(38, 57, Util::formatCnab(9, Util::onlyNumbers($boleto->getNossoNumero()), 20));
+        $this->add(38, 57, Util::formatCnab('9L', Util::onlyNumbers($boleto->getNossoNumero()), 20));
         $this->add(58, 58, '1');
         $this->add(59, 59, '1');
         $this->add(60, 60, '2');
