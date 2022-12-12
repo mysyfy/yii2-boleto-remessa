@@ -400,6 +400,20 @@ abstract class AbstractRemessa
         return $this->carteiras;
     }
 
+    public function errosValidacao() {
+
+        $ret = [];
+
+        foreach ($this->camposObrigatorios as $campo) {
+            if (call_user_func([$this, 'get' . ucwords($campo)]) == '') {
+                $ret[] = ucwords($campo);
+            }
+        }
+
+        return $ret;
+
+    }
+
     /**
      * Método que valida se o banco tem todos os campos obrigadotorios preenchidos
      *
